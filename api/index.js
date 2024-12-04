@@ -8,6 +8,8 @@ const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const multer = require("multer");
 const path = require("path");
+const router = express.Router();
+const authenticateToken = require('./authMiddleware');
 
 const Ticket = require("./models/Ticket");
 
@@ -25,7 +27,12 @@ app.use(
    })
 );
 
-mongoose.connect(process.env.MONGO_URL);
+mongoose.connect(process.env.MONGO_URL , {
+   useNewUrlParser: true,
+   useUnifiedTopology: true
+})
+.then(() => console.log('Connected to MongoDB locally'))
+.catch((err) => console.error('MongoDB connection error:', err));
 
 const storage = multer.diskStorage({
    destination: (req, file, cb) => {
@@ -56,6 +63,21 @@ app.post("/register", async (req, res) => {
       res.status(422).json(e);
    }
 });
+
+router.post('/event/:id', authenticateToken, (req, res) => {
+   const eventId = req.params.id;
+   
+   // Assuming you have a MongoDB Event model
+   Event.findById(eventId, (err, event) => {
+     if (err || !event) return res.status(404).json({ message: "Event not found" });
+ 
+     event.likes += 1;
+     event.save()
+       .then(() => res.status(200).json(event))
+       .catch((error) => res.status(500).json({ message: "Error liking event", error }));
+   });
+ });
+
 
 app.post("/login", async (req, res) => {
    const { email, password } = req.body;
@@ -257,3 +279,4 @@ const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
    console.log(`Server is running on port ${PORT}`);
 });
+module.exports = router;
