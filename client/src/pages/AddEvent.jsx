@@ -39,10 +39,11 @@ export default function AddEvent() {
       .post("/createEvent", formData)
       .then((response) => {
         console.log("Event posted successfully:", response.data);
-        
+        alert("Event created successfully!"); 
       })
       .catch((error) => {
         console.error("Error posting event:", error);
+        alert("Error creating event. Please try again.");
       });
   };
 
@@ -131,7 +132,7 @@ export default function AddEvent() {
             onChange={handleChange}
           />
         </label>
-        <label className='flex flex-col'>
+        {/* <label className='flex flex-col'>
           Image:
           <input
             type="file"
@@ -140,7 +141,7 @@ export default function AddEvent() {
             className=' rounded mt-2 pl-5 px-4 py-10 ring-sky-700 ring-2 h-8 border-none'
             onChange={handleImageUpload}
           />
-        </label >
+        </label > */}
         <button className='primary' type="submit">Submit</button>
         </div>
         

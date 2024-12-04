@@ -487,3 +487,40 @@ transition: all 0.2s ease-in-out;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.custom-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.5);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.prev-arrow {
+  left: 10px;
+}
+
+.next-arrow {
+  right: 10px;
+}
+
+.custom-dots {
+  bottom: 20px;
+}
+
+.custom-dots li button:before {
+  color: white;
+  opacity: 0.5;
+}
+
+.custom-dots li.slick-active button:before {
+  color: white;
+  opacity: 1;
+}
